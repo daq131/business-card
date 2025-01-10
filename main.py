@@ -32,14 +32,6 @@ class BusinessContact(BaseContact):
         self.company = company
         self.occupation = occupation
 
-human_1 = BusinessContact(first_name=fake.first_name(), last_name=fake.last_name(), company=fake.company(), occupation=fake.job(),
-              email_address=fake.email(), tel_priv=fake.phone_number(), tel_work=fake.phone_number())
-
-print(human_1)
-print(human_1.contact())
-print(human_1.workcontact())
-print(human_1.label_lenght)
-
 def create_contacts(kind, how_many):
     contacts = []
     for i in range(how_many):
@@ -53,4 +45,4 @@ if __name__ == "__main__":
     kind = input("select the type of business card: b - business, h - home: ")
     how_many = int(input('please select number of cards '))
     cards = create_contacts(kind, how_many)
-    print(cards)
+    # print(cards)
