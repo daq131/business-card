@@ -1,7 +1,6 @@
 from faker import Faker
 fake = Faker()
 
-
 class BaseContact:
     def __init__(self, first_name, last_name, email_address, tel_priv):
         self.first_name = first_name
@@ -13,18 +12,14 @@ class BaseContact:
         return f"{self.first_name} {self.last_name}, {self.email_address}, {self.tel_priv}"
     # print(people_1)
     def __repr__(self):
-        return f"Card(first_name={self.first_name} last_name={self.last_name}, adres email={self.email_address})"
+        return f"Card(first_name={self.first_name} last_name={self.last_name}, adres email={self.email_address}, tel_priv={self.tel_priv})"
 
     @property
     def contact_phone(self):
-        return f"Choose work phone: {self.tel_work} and call to {self.first_name} {self.last_name}"
+        return self.tel_priv
 
-    @contact_phone.setter
-    def contact_phone(self, value):
-            self.tel_work = value
-
-    def contact(self, *args):
-        return f"CCCChoose home phone: {self.tel_priv} and call to {self.first_name} {self.last_name} "
+    def contact(self):
+        return f"Contact: {self.first_name} at {self.contact_phone}"
 
     @property
     def label_lenght(self):
@@ -37,34 +32,36 @@ class BusinessContact(BaseContact):
         self.tel_work = tel_work
         self.company = company
         self.occupation = occupation
-        super().contact_phone
 
-human_1 = BusinessContact(first_name=fake.first_name(), last_name=fake.last_name(), company=fake.company(), occupation=fake.job(),
-              email_address=fake.email(), tel_priv=fake.phone_number(), tel_work=fake.phone_number())
 
-print(human_1)
-print(human_1.contact())
-print(human_1.contact_phone)
-print(BusinessContact.contact_phone)
+    def __str__(self):
+        return f"{self.tel_work}, {self.company}, {self.occupation}"
+
+    @property
+    def contact_phone(self):
+        return self.tel_work
+
+# human_1 = BusinessContact(first_name=fake.first_name(), last_name=fake.last_name(), company=fake.company(), occupation=fake.job(),
+#               email_address=fake.email(), tel_priv=fake.phone_number(), tel_work=fake.phone_number())
+
+h1 = BaseContact("Dawid", "Szarwark", "dsz@email.com", "943165432")
+h2 = BaseContact("Zenek", "Lubek", "zb@email.com", "945692321")
+b1 = BusinessContact("11111321", "Dgsm", "webmaster", "Szefoo", "Zgredek", "zd@email.com", "33333333")
 
 def create_contacts(kind, how_many):
     business_card2 = []
     for i in range(how_many):
         if kind == 'b':
-            company =  business_card2.append(fake.company()),
-            tel_work = business_card2.append(fake.phone_number()),
-            occupation = business_card2.append(fake.job()),
-            tel_work = business_card2.append(fake.phone_number()),
+            business_card2.append(BusinessContact(first_name=fake.first_name(), last_name=fake.last_name(), email_address=fake.email(),
+                                             tel_priv=fake.phone_number(), tel_work=fake.phone_number(), company=fake.company(), occupation=fake.job()))
         elif kind == 'h':
-            first_name = business_card2.append(fake.name()),
-            last_name = business_card2.append(fake.last_name()),
-            email_address = business_card2.append(fake.email()),
-            tel_priv = business_card2.append(fake.phone_number())
-    return business_card2
+            business_card2.append(BaseContact(first_name=fake.first_name(), last_name=fake.last_name(), email_address=fake.email(), tel_priv=fake.phone_number()))
 
+    return business_card2
 
 if __name__ == "__main__":
     kind = input("select the type of business card: b - business, h - home: ")
     how_many = int(input('please select number of cards '))
     cards = create_contacts(kind, how_many)
-    print(cards)
+    for i in cards:
+        print(i)
